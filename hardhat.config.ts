@@ -36,11 +36,13 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
     },
     rinkeby:{
       url:`https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_API_KEY}/eth/rinkeby`,
-      accounts: [process.env.PRIVATE_KEY]
+      accounts: [process.env.PRIVATE_KEY_SECOND_ACCOUNT,process.env.PRIVATE_KEY]
     }
   },
   namedAccounts:{
     deployer: 0,
+    exploiter2: 0,
+    exploiter: 1,
   },
   etherscan:{
     apiKey:process.env.ETHERSCAN_API_KEY

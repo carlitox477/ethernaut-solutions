@@ -5,20 +5,20 @@ import {DeployFunction} from 'hardhat-deploy/types';
 import {showDeploymentAddress} from "../../scripts/utils";
 
 
-const deployCoinFlip: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployDelegate: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, getNamedAccounts} = hre;
   const {deploy} = deployments;
   const {deployer} = await getNamedAccounts();
-  const deploymentResult=await deploy('CoinFlip', {
+  const deploymentResult=await deploy('Delegate', {
     from: deployer,
-    args: [],
+    args: [deployer],
     log: true,
   });
 
-  showDeploymentAddress('CoinFlip',deploymentResult)
+  showDeploymentAddress('Delegate',deploymentResult)
   
 };
 
-export default deployCoinFlip;
-deployCoinFlip.tags = ['CoinFlip'];
+export default deployDelegate;
+deployDelegate.tags = ['Delegate'];
 
