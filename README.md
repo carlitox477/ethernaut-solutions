@@ -94,3 +94,11 @@ Otherwise, it won't modified the storage values of the contract. It seems a hard
 
 # Challenge 7: Force
 The self destruct method can send all its ether balance to any address without a possible rejection or before the contract being deployed
+
+# Challenge 8: Vault
+Although private values aren't direct accessable by a function, we can always see the corresponding memory slot in the contract.
+Up to this date (17/05/2022) memory slots have always been of 256 in EVM.
+
+The compiler put the byte32 storage value in one single slot, while a bool depends on the variable declared before and after. In our case, bool is put in the slot 0, while the byte32 in slot 1.
+
+This means our password is in the slot 1, if we get it we can unlock our contract.
