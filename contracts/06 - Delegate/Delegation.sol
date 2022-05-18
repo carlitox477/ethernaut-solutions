@@ -18,5 +18,6 @@ contract Delegation {
     if (result) {
       this;
     }
+    require(result);
   }
 }

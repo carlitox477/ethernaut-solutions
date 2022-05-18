@@ -102,3 +102,8 @@ Up to this date (17/05/2022) memory slots have always been of 256 in EVM.
 The compiler put the byte32 storage value in one single slot, while a bool depends on the variable declared before and after. In our case, bool is put in the slot 0, while the byte32 in slot 1.
 
 This means our password is in the slot 1, if we get it we can unlock our contract.
+
+# Challenge 9: King
+The contract may seem well written, only the owner can always claim its throne and we can't modified the owner. However, it must be said that the requirement isn't becoming the king. It it that the current king (the owner) isn't allowed to claim the throne again.
+
+Once we get this idea, we can see a vector attack with the transfer call. What if we set a contract that every time it recieve ether the transaction is reverted? This will deny everyone (included the owner) to get our throne (the contract throne, actually).
