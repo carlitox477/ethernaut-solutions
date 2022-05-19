@@ -119,3 +119,6 @@ Related hacks: Maker Dao, fort ETH an ETC
 
 # Challenge 11: Elevator
 The error is pretty easy to see, the Building interface method **isLastFloor** should have been set as view, restricting an implementation that could change state value.
+
+# Challenge 11: Privacy
+We can get private storage values by getting the slot where they are stored and getting the value we want.
