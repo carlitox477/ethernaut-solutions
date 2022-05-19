@@ -1,3 +1,6 @@
+# Challenge 3: Fallback
+Related hack: Value Defi
+
 # Challenge 3: Coinflip
 The key to solve this game is understanding why the CoinFlip flip function isn't random and how to exploit this failure with a contract.
 
@@ -47,6 +50,7 @@ function flip() public returns (bool) {
 ```
 
 A solution for this challenge can be found in this github repository of my own, feel free to give it a look.
+Related exploit: FOMO3D, 
 
 # Challenge 4: Telephone
 In order to win this challenge we need to understand the difference between tx.origin and msg.sender:
@@ -107,3 +111,11 @@ This means our password is in the slot 1, if we get it we can unlock our contrac
 The contract may seem well written, only the owner can always claim its throne and we can't modified the owner. However, it must be said that the requirement isn't becoming the king. It it that the current king (the owner) isn't allowed to claim the throne again.
 
 Once we get this idea, we can see a vector attack with the transfer call. What if we set a contract that every time it recieve ether the transaction is reverted? This will deny everyone (included the owner) to get our throne (the contract throne, actually).
+
+# Challenge 10: Reentrance
+This atacck is pretty similar to the last one. Balances are modified after sending ether back to someone who withraw. If it is a human account, this shouldn't generate any problem. However, a contract account may activate its recieve function, and this may call back the whithraw option, draining our contract balance.
+
+Related hacks: Maker Dao, fort ETH an ETC
+
+# Challenge 11: Elevator
+The error is pretty easy to see, the Building interface method **isLastFloor** should have been set as view, restricting an implementation that could change state value.
