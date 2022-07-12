@@ -120,5 +120,21 @@ Related hacks: Maker Dao, fort ETH an ETC
 # Challenge 11: Elevator
 The error is pretty easy to see, the Building interface method **isLastFloor** should have been set as view, restricting an implementation that could change state value.
 
-# Challenge 11: Privacy
+# Challenge 12: Privacy
 We can get private storage values by getting the slot where they are stored and getting the value we want.
+
+# Challenge 13: Gatekeeper One
+* To pass gateOne we only need to use a contract
+* To pass gateTwo we need to use remix console to calculate the gas we are gonna need. After some debugging we notice that the gas used until gasleft() is 254
+* To pass gateThree, considering we are sending a ket of 8 bytes (64 bits):
+    * ```uint32(uint64(_gateKey) == uint16(uint64(_gateKey))``` if the last 16 bits are to the last 32 bits are equal to 0. Meaning our gatekey should be sth like 0xXXXXXXXX0000XXXX
+    * ```uint32(uint64(_gateKey)) != uint64(_gateKey)``` if at least one of the X Hex is different from 0: 0xXXXXXXXXOOOOOOOO
+    * ```uint32(uint64(_gateKey)) == uint16(tx.origin)``` if the last 16 bits (8 HEX) are equal to the last 16 bits of the contract address. This is 0xXXXXXXXX0000TTTT
+
+This means our gate key will be contract.address & 0xFFFFFFFF0000FFFF. We are masking our address with operator and.
+
+# Challenge 14: Gatekeeper Two
+* To pass gateOne we only need to use a contract
+* The extcodesize function return the contract lenght of an address. It returns 0 if it is a user or, if we are using the caller function, if tx.origin is being contructed (extcodesize(caller) is called by the constructor). In other word, to pass gateTwo we need to call enter from the contructor.
+* To pass gateThree we need ```uint64(bytes8(keccak256(abi.encodePacked(msg.sender)))) ^ uint64(_gateKey) == uint64(0) - 1```. ^ is the XOR operator, this means that we should tho the inverse which is XOR to get the correct _gateKey: ```(uint64(0) - 1) ^ uint64(bytes8(keccak256(abi.encodePacked(msg.sender))))``` will be our correct key. We should consider that msg.sender will be our exploit contract address. So if we calculate this value inside the exploit contract we are going to have ```bytes8 key = bytes8(uint64(bytes8(keccak256(abi.encodePacked(address(this))))) ^ (uint64(0) - 1));```
+

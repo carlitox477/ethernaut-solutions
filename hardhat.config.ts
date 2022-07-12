@@ -35,7 +35,7 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
     hardhat:{
     },
     rinkeby:{
-      url:`https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_API_KEY}/eth/rinkeby`,
+      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`, //`https://speedy-nodes-nyc.moralis.io/${process.env.MORALIS_API_KEY}/eth/rinkeby`,
       accounts: [process.env.PRIVATE_KEY_SECOND_ACCOUNT,process.env.PRIVATE_KEY]
     }
   },
