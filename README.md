@@ -138,3 +138,10 @@ This means our gate key will be contract.address & 0xFFFFFFFF0000FFFF. We are ma
 * The extcodesize function return the contract lenght of an address. It returns 0 if it is a user or, if we are using the caller function, if tx.origin is being contructed (extcodesize(caller) is called by the constructor). In other word, to pass gateTwo we need to call enter from the contructor.
 * To pass gateThree we need ```uint64(bytes8(keccak256(abi.encodePacked(msg.sender)))) ^ uint64(_gateKey) == uint64(0) - 1```. ^ is the XOR operator, this means that we should tho the inverse which is XOR to get the correct _gateKey: ```(uint64(0) - 1) ^ uint64(bytes8(keccak256(abi.encodePacked(msg.sender))))``` will be our correct key. We should consider that msg.sender will be our exploit contract address. So if we calculate this value inside the exploit contract we are going to have ```bytes8 key = bytes8(uint64(bytes8(keccak256(abi.encodePacked(address(this))))) ^ (uint64(0) - 1));```
 
+# Challenge 15: Naught Coin
+The key here is understanding the bad implementation of the ERC20 token. Even though transfer function was override and it was added the lockTokens modifier, others functions from ERC20 wasn't implemented. Meaning transferFrom and approve are the same than ERC20, so we can use this functions to exploit the contract.
+
+# Challege 16: Preservation
+A delegation call simulate the execution of code from other contract in the context of the contract we are calling. This can esealy lead to vulnerabilities when these external contracts modify state variables, due to the fact that we will change memory storage slots in the caller contract.
+
+Knowing this, we are going to build a contract which modifies its third memory storage slot and we will send this contract address as an int to the Preservation contract through the setFirstTime function. After that, we will call this function with the exploiter address as an integer.

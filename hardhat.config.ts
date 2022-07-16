@@ -28,6 +28,7 @@ task("accounts", "Prints the list of accounts", async (args, hre) => {
   solidity: {
     compilers: [
       {version: "0.6.0"},
+      {version: "0.6.2"}
     ],
   },
   defaultNetwork: "hardhat",
