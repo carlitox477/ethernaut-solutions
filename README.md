@@ -141,7 +141,36 @@ This means our gate key will be contract.address & 0xFFFFFFFF0000FFFF. We are ma
 # Challenge 15: Naught Coin
 The key here is understanding the bad implementation of the ERC20 token. Even though transfer function was override and it was added the lockTokens modifier, others functions from ERC20 wasn't implemented. Meaning transferFrom and approve are the same than ERC20, so we can use this functions to exploit the contract.
 
-# Challege 16: Preservation
+# Challenge 16: Preservation
 A delegation call simulate the execution of code from other contract in the context of the contract we are calling. This can esealy lead to vulnerabilities when these external contracts modify state variables, due to the fact that we will change memory storage slots in the caller contract.
 
 Knowing this, we are going to build a contract which modifies its third memory storage slot and we will send this contract address as an int to the Preservation contract through the setFirstTime function. After that, we will call this function with the exploiter address as an integer.
+
+# Challenge 17: Recovery
+This challenge consists in looking into internal transactions to find the contract to destroy.
+
+# Challenge 18: Magic number
+Opcodes: https://www.ethervm.io/
+
+We must remeber that EVM is a stack machine.
+
+When we deploy a contract we are just sending data to the blockchain, the EVM will interpret that this data was sent to create a contract and how this contract is. This data, when we create a contract, wil be divided in two
+* Initialization: This is the constructor
+* Runtime: The rest of the contract that will be called whenever we call a function of the contract.
+
+For this challenge we need that our runtime lenght to be just 10 opcodes. 
+
+# Challenge 19: Alien Codex
+Every contract is asigned 2^256 memory slot that can use.
+If an array has a length of 2^256, it has access to all memory slots assigned to the contract.
+For a dynamic array, the zero position is in the slot keccak256(slot_where_array_lenght_is_saved).
+
+p = 0
+2^256 - p is the position until overflow from the memory assigned to the contract, one more would be the slot 0 (at least in theory)
+
+Exploit underflow
+Edit the correct memory slot(0)
+
+# Challenge 20: Denial
+The goal of this challenge is to deny owner withraw call at any cost.
+The contract show a reentrancy vulnerability that we can exploit
