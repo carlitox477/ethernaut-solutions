@@ -174,3 +174,12 @@ Edit the correct memory slot(0)
 # Challenge 20: Denial
 The goal of this challenge is to deny owner withraw call at any cost.
 The contract show a reentrancy vulnerability that we can exploit
+
+# Challenge 21: Shop
+Take advantage of other view function to build a view function which change its answer during execution
+
+# Challenge 22: Dex
+Play with the price
+
+# Challenge 23: DexTwo
+Take advantage of the lack of token checks
