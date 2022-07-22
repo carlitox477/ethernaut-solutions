@@ -183,3 +183,31 @@ Play with the price
 
 # Challenge 23: DexTwo
 Take advantage of the lack of token checks
+
+# Challenge 24: Puzzle Wallet
+The key here is:
+* Understanding how a proxy contract works
+* Understanding the multicall function
+* By default the balance is 0.001 ether
+
+First of all, we need to become the owner the Puzzle Wallet contract (Actually, the proxy). This can be done by calling the proposeNewAdmin function in the PuzzleProxy contract, due to the fact that this function allow us to change the memory slot were owner is stored.
+
+Then we should  whitelist ourselves with the ```addToWhitelist``` function.
+
+If we find the way to make a deposit of 0.002 ether by sending just 0.001 ether, then we can extract 0.002 ether and call the setMaxBalance function to set ourselves as admin of the proxy contract (We are going to edit the same memory slot).
+
+Even though the ```multicall``` function was made to avoid calling the deposit function multiple times, it made nothing about the multicall function. So we can call multiple times the multicall function with a single call to the deposit function but with just 0.001 ether.
+
+Afte making this, we call the execute function to retiire 0.002 ether and then we call the ```setMaxBalance``` to set ourselves as admin
+
+# Challenge 25: Motorbike
+This proxy made a mistake during deploy, the initialize function was never called in the implementation address, allowing anyone to call this function, become the upgrader and upgrade the contract.
+
+# Challenge 26: DoubleEntry
+Some fucking idea.
+
+First of all, we need to understand that whenever we transfer LegacyToken we are transferyn DoubleEntryPoint tokens (see ```transfer``` function in LegacyToken contract) by calling ```delegateTransfer```.
+
+When we call ```delegateTransfer``` we use the fortaNotify modifer, which call ```forta.notify(player, msg.data)```. Then, the Forta contracts call the handleTransaction function to the player DetectionBot contract.
+
+So, given that whenever we call the transfer sweep function inside CryptoVault we call the transfer function from LegacyToken, and by doing this we produce the exploit, we just need to create a bot that raise an alert from the Forta contract whenever this function is called.
